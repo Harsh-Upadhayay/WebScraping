@@ -3,8 +3,39 @@ import scrapy
 
 class BookspiderSpider(scrapy.Spider):
     name = "bookSpider"
+
+    # To Scrape within a website only.
     allowed_domains = ["books.toscrape.com"]
-    start_urls = ["https://books.toscrape.com"]
+    start_urls = ["https://books.toscrape.com/"]
 
     def parse(self, response):
-        pass
+        books =  response.css("article.product_pod")
+
+        for book in books:
+            url = book.css("a").attrib['href']
+
+            if 'catalogue/' in url:
+                bookUrl = 'https://books.toscrape.com/' + url
+            else:
+                bookUrl = 'https://books.toscrape.com/catalogue/' + url
+
+            yield response.follow(bookUrl, callback=self.parseBookPage)
+        
+        nextPageUrl = response.css("li.next a::attr(href)").get()
+        
+        if nextPageUrl is not None:
+            if 'catalogue/' in nextPageUrl:
+                nextPageUrl = 'https://books.toscrape.com/' + nextPageUrl
+            else:
+                nextPageUrl = 'https://books.toscrape.com/catalogue/' + nextPageUrl
+
+            yield response.follow(nextPageUrl, callback=self.parse)
+
+    def parseBookPage(self, response):
+        
+        yield {
+            'url': response.url,
+            'title': response.css('.product_main h1::text').get(),
+            'description': response.xpath("/html/body/div[1]/div/div[2]/div[2]/article/p").get(),
+            'price':  response.xpath("/html/body/div[1]/div/div[2]/div[2]/article/div[1]/div[2]/p[1]").css("p::text").get()
+        }
