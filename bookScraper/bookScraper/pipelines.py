@@ -38,7 +38,7 @@ class SaveToMongoDbPipeline:
         CONNECTION_STRING = "mongodb://localhost:27017/"
         DB_NAME = 'BlueStar'
         COLLECTION = 'books'
-
+ 
         self.dbHandle = MongoClient(CONNECTION_STRING)[DB_NAME]
         self.collHandle = self.dbHandle[COLLECTION]
 
