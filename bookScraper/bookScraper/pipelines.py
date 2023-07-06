@@ -39,8 +39,8 @@ class SaveToMongoDbPipeline:
         DB_NAME = 'BlueStar'
         COLLECTION = 'books'
  
-        self.dbHandle = MongoClient(CONNECTION_STRING)[DB_NAME]
-        self.collHandle = self.dbHandle[COLLECTION]
+        self.dbHandle = MongoClient(CONNECTION_STRING)
+        self.collHandle = self.dbHandle[DB_NAME][COLLECTION]
 
     def process_item(self, item, spider):
         data = dict(BookItem(item))

@@ -12,6 +12,8 @@ BOT_NAME = "bookScraper"
 SPIDER_MODULES = ["bookScraper.spiders"]
 NEWSPIDER_MODULE = "bookScraper.spiders"
 
+# LOG_LEVEL = 'ERROR'
+LOG_FILE = 'error.log'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "bookScraper (+http://www.yourdomain.com)"

@@ -23,15 +23,15 @@ class BookspiderSpider(scrapy.Spider):
         
         
         # Url for next page
-        nextPageUrl = response.css("li.next a::attr(href)").get()
+        # nextPageUrl = response.css("li.next a::attr(href)").get()
         
-        if nextPageUrl is not None:
-            if 'catalogue/' in nextPageUrl:
-                nextPageUrl = 'https://books.toscrape.com/' + nextPageUrl
-            else:
-                nextPageUrl = 'https://books.toscrape.com/catalogue/' + nextPageUrl
+        # if nextPageUrl is not None:
+        #     if 'catalogue/' in nextPageUrl:
+        #         nextPageUrl = 'https://books.toscrape.com/' + nextPageUrl
+        #     else:
+        #         nextPageUrl = 'https://books.toscrape.com/catalogue/' + nextPageUrl
 
-            yield response.follow(nextPageUrl, callback=self.parse)
+        #     yield response.follow(nextPageUrl, callback=self.parse)
 
     def parseBookPage(self, response):
 
