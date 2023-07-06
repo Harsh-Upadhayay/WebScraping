@@ -7,6 +7,7 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 from pymongo import MongoClient
+from bookScraper.items import BookItem
 
 class BookscraperPipeline:
     def process_item(self, item, spider):
@@ -32,3 +33,19 @@ class BookscraperPipeline:
 
 
 class SaveToMongoDbPipeline:
+
+    def __init__(self):
+        CONNECTION_STRING = "mongodb://localhost:27017/"
+        DB_NAME = 'BlueStar'
+        COLLECTION = 'books'
+
+        self.dbHandle = MongoClient(CONNECTION_STRING)[DB_NAME]
+        self.collHandle = self.dbHandle[COLLECTION]
+
+    def process_item(self, item, spider):
+        data = dict(BookItem(item))
+        self.collHandle.insert_one(data)
+        return item
+    
+    def close_spider(self, spider):
+        self.dbHandle.close()

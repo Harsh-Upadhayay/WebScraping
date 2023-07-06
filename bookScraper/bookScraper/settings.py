@@ -63,7 +63,9 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   "bookScraper.pipelines.BookscraperPipeline": 300,
+    # pipeline path: precedence
+   "bookScraper.pipelines.BookscraperPipeline": 1,
+   "bookScraper.pipelines.SaveToMongoDbPipeline": 2,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
