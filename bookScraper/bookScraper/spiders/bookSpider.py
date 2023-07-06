@@ -1,5 +1,5 @@
 import scrapy
-
+from bookScraper.items import BookItem
 
 class BookspiderSpider(scrapy.Spider):
     name = "bookSpider"
@@ -21,6 +21,8 @@ class BookspiderSpider(scrapy.Spider):
 
             yield response.follow(bookUrl, callback=self.parseBookPage)
         
+        
+        # Url for next page
         nextPageUrl = response.css("li.next a::attr(href)").get()
         
         if nextPageUrl is not None:
@@ -32,10 +34,23 @@ class BookspiderSpider(scrapy.Spider):
             yield response.follow(nextPageUrl, callback=self.parse)
 
     def parseBookPage(self, response):
+
+        # yield {
+
+        #     'url': response.url,
+        #     'title': response.css('.product_main h1::text').get(),
+        #     'description': response.xpath("/html/body/div[1]/div/div[2]/div[2]/article/p").get(),
+        #     'price': response.xpath("/html/body/div[1]/div/div[2]/div[2]/article/div[1]/div[2]/p[1]").css("p::text").get(),
+        #     'rating': response.xpath("/html/body/div[1]/div/div[2]/div[2]/article/div[1]/div[2]/p[3]").css("p::attr('class')").get(),
+
+        # }
         
-        yield {
-            'url': response.url,
-            'title': response.css('.product_main h1::text').get(),
-            'description': response.xpath("/html/body/div[1]/div/div[2]/div[2]/article/p").get(),
-            'price':  response.xpath("/html/body/div[1]/div/div[2]/div[2]/article/div[1]/div[2]/p[1]").css("p::text").get()
-        }
+
+        bookItem = BookItem()
+        bookItem['url'] = response.url
+        bookItem['title'] = response.css('.product_main h1::text').get()
+        bookItem['description'] = response.xpath("/html/body/div[1]/div/div[2]/div[2]/article/p").get()
+        bookItem['price'] = response.xpath("/html/body/div[1]/div/div[2]/div[2]/article/div[1]/div[2]/p[1]").css("p::text").get()
+        bookItem['rating'] = response.xpath("/html/body/div[1]/div/div[2]/div[2]/article/div[1]/div[2]/p[3]").css("p::attr('class')").get()
+
+        yield bookItem

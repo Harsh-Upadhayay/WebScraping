@@ -6,8 +6,29 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-
+from pymongo import MongoClient
 
 class BookscraperPipeline:
     def process_item(self, item, spider):
+
+        adapter = ItemAdapter(item)
+
+        ratingString = adapter.get('rating').split(' ')[1].lower()
+
+        if ratingString == 'zero':
+            adapter['rating'] = 0
+        elif ratingString == 'one':
+            adapter['rating'] = 1
+        elif ratingString == 'two':
+            adapter['rating'] = 2
+        elif ratingString == 'three':
+            adapter['rating'] = 3
+        elif ratingString == 'four':
+            adapter['rating'] = 4
+        elif ratingString == 'five':
+            adapter['rating'] = 5
+
         return item
+
+
+class SaveToMongoDbPipeline:
