@@ -67,7 +67,7 @@ ROBOTSTXT_OBEY = False
 ITEM_PIPELINES = {
     # pipeline path: precedence
    "bookScraper.pipelines.BookscraperPipeline": 1,
-   "bookScraper.pipelines.SaveToMongoDbPipeline": 2,
+#    "bookScraper.pipelines.SaveToMongoDbPipeline": 2,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

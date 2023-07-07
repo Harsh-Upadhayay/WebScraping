@@ -35,7 +35,7 @@ class BookscraperPipeline:
 class SaveToMongoDbPipeline:
 
     def __init__(self):
-        CONNECTION_STRING = "mongodb://localhost:27017/"
+        CONNECTION_STRING = "mongodb://127.0.0.1:27017/"
         DB_NAME = 'BlueStar'
         COLLECTION = 'books'
  
